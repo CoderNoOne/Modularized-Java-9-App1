@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="convertersapp" />
+        <module name="exceptionsapp" />
+        <module name="mainapp" />
+        <module name="modelapp" />
+        <module name="servicesapp" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="convertersapp" target="11" />
+      <module name="exceptionsapp" target="11" />
+      <module name="mainapp" target="11" />
+      <module name="modelapp" target="11" />
+      <module name="servicesapp" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
