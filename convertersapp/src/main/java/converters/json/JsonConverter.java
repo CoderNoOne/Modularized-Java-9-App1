@@ -21,8 +21,7 @@ public abstract class JsonConverter<T> {
     this.jsonFilename = jsonFilename;
   }
 
-  // conversion from object to json
-  public void toJson(final T element/*, final String jsonFilename*/) {
+  public void toJson(final T element) {
     try (FileWriter fileWriter = new FileWriter(jsonFilename)) {
       if (element == null) {
         throw new NullPointerException("ELEMENT IS NULL");
@@ -34,8 +33,7 @@ public abstract class JsonConverter<T> {
     }
   }
 
-  // conversion from json to object
-  public Optional<T> fromJson(/*String jsonFilename*/) {
+  public Optional<T> fromJson() {
     try (FileReader fileReader = new FileReader(jsonFilename)) {
       return Optional.of(gson.fromJson(fileReader, type));
     } catch (Exception e) {

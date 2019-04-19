@@ -1,7 +1,6 @@
 package services;
 
 import exceptions.AppException;
-
 import java.util.Scanner;
 
 public class UserDataService {
@@ -18,7 +17,6 @@ public class UserDataService {
     return Integer.parseInt(text);
   }
 
-
   public String getString(String inputMessage) {
 
     System.out.println(inputMessage);
@@ -31,7 +29,6 @@ public class UserDataService {
 
     return input;
   }
-
 
   public void close() {
     if (sc != null) {

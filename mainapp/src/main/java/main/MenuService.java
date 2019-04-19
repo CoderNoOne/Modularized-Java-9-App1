@@ -1,28 +1,54 @@
 package main;
 
+import converters.json.ClientWithProductsFileJsonConverter;
 import exceptions.AppException;
+import model.ClientWithProducts;
+import services.FileService;
 import services.ShoppingService;
 import services.UserDataService;
 
+import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.List;
 
 public class MenuService {
 
   private final ShoppingService shoppingService;
   private final UserDataService userDataService;
 
+  public MenuService(final String jsonFilename, final String... filenames) {
 
-  public MenuService(final String jsonFilename) {
+    if (jsonFilename == null || !jsonFilename.matches("[\\w]+\\.json")) {
+      throw new AppException("WRONG JSON FILE FORMAT!");
+    }
 
+    if (filenames == null || !Arrays.stream(filenames).map(".\\mainapp\\"::concat).map(Paths::get).allMatch(Files::isRegularFile)) {
+      throw new AppException("CRITICAL EXCEPTION - AT LEAST ONE OF YOUR INPUT FILE CANNOT BE READ. CHECK YOUR FILES AGAIN");
+    }
+
+    convertFilesIntoJson(jsonFilename, filenames);
     shoppingService = new ShoppingService(jsonFilename);
     userDataService = new UserDataService();
+  }
+
+  private void convertFilesIntoJson(final String jsonFilename, final String... filenames) {
+
+    var clientWithProductsFileJsonConverter = new ClientWithProductsFileJsonConverter(jsonFilename);
+
+    List<ClientWithProducts> clientWithProducts = FileService.mergeAllFilesIntoClientWithProductsList(
+            Arrays.stream(filenames).map(".\\mainapp\\"::concat).toArray(String[]::new));
+
+    clientWithProductsFileJsonConverter.toJson(clientWithProducts);
   }
 
   public void mainMenu() {
     menuOptions();
     while (true)
       try {
+
         int option = userDataService.getInt("INPUT YOUR OPTION: ");
         switch (option) {
           case 1:
@@ -66,7 +92,7 @@ public class MenuService {
 
 
   private void printProductCategories() {
-    shoppingService.ProductCategories().forEach(cat -> System.out.println("Category: " + cat));
+    shoppingService.productCategories().forEach(cat -> System.out.println("Category: " + cat));
   }
 
   private static void menuOptions() {
@@ -99,39 +125,56 @@ public class MenuService {
 
   }
 
-  private void option8() {
-    System.out.println(shoppingService.clientsDebt());
-  }
+  private void option1() {
 
-  private void option7() {
-    System.out.println(shoppingService.mostPopularCategoryByClientsAge());
-  }
-
-  private void option6() {
-    System.out.println(shoppingService.clientsWithMostPurchaseValueInEachCategory());
-  }
-
-  private void option5() {
-    System.out.println(shoppingService.cheapiestInEachCategory());
-  }
-
-  private void option4() {
-    System.out.println(shoppingService.mostExpensiveInEachCategory());
-  }
-
-  private void option3() {
-    System.out.println(shoppingService.averageProductPriceInCategory());
+    shoppingService.whoPaidTheMost().forEach((client, value) ->
+            System.out.println("Client who paid the most for all purchases: " + client + " -> Shopping value: " + value));
   }
 
   private void option2() {
     printProductCategories();
-    final String categoryName = userDataService.getString("INPUT PRODCUT CATEGORY");
-    System.out.println(shoppingService.whoPaidTheMostInSpecifiedCategory(categoryName));
+    final String categoryName = userDataService.getString("INPUT PRODUCT CATEGORY FROM ABOVE LIST");
+
+    System.out.println("Client who paid the most in " + categoryName + " product category -> " +
+            shoppingService.whoPaidTheMostInSpecifiedCategory(categoryName));
   }
 
-  private void option1() {
+  private void option3() {
 
-    System.out.println(shoppingService.whoPaidTheMost());
+    shoppingService.averageProductPriceInCategory().forEach((category, avgPrice) ->
+            System.out.println("Category " + category + " -> Average product price: " + avgPrice.setScale(2, RoundingMode.HALF_UP)));
   }
+
+  private void option4() {
+
+    shoppingService.mostExpensiveProductInEachCategory().forEach((category, product) ->
+            System.out.println("Category: " + category + " -> Most expensive product: " + product.getName() + "| price: " + product.getPrize()));
+  }
+
+  private void option5() {
+    shoppingService.cheapiestProductInEachCategory().forEach((category, product) ->
+            System.out.println("Product category: " + category + " -> Cheapiest product: " + product.getName() + "| price: " + product.getPrize()));
+  }
+
+  private void option6() {
+    shoppingService.clientsWithMostPurchaseValueInEachCategory().forEach((category, client) ->
+            System.out.println("Product category: " + category + " -> Client with most purchase value in that category: " + client));
+  }
+
+
+  private void option7() {
+    shoppingService.mostPopularCategoryByClientsAge().forEach((age, category) ->
+            System.out.println("Clients age: " + age + " -> Most popular category: " + category));
+  }
+
+  private void option8() {
+    if (!shoppingService.clientsDebt().isEmpty()) {
+      shoppingService.clientsDebt().forEach((client, debt)
+              -> System.out.println("Client: " + client + " -> Debt: " + debt.setScale(2, RoundingMode.HALF_UP)));
+    } else {
+      System.out.println("NO CLIENT HAS A DEBT!\n");
+    }
+  }
+
 
 }

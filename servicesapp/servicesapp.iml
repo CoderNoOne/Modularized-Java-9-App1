@@ -15,5 +15,6 @@
     <orderEntry type="module" module-name="exceptionsapp" />
     <orderEntry type="module" module-name="convertersapp" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
+    <orderEntry type="module" module-name="validatorapp" />
   </component>
 </module>

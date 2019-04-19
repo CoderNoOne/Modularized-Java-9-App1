@@ -1,24 +1,12 @@
 package model;
 
-//import lombok.AllArgsConstructor;
-//import lombok.Builder;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-
 import java.util.List;
 import java.util.Objects;
 
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@Data
-//@Builder
-
 public class ClientWithProducts {
-  // Jan;Kos;18;2000 [Komputer;Elektronika;2400 PanTadeusz;Ksiazka;120]
 
   private Client client;
   private List<Product> products;
-
 
   public ClientWithProducts(Client client, List<Product> products) {
     this.client = client;
