@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MenuService {
 
@@ -25,13 +26,19 @@ public class MenuService {
       throw new AppException("WRONG JSON FILE FORMAT!");
     }
 
-    if (filenames == null || !Arrays.stream(filenames).map(".\\mainapp\\"::concat).map(Paths::get).allMatch(Files::isRegularFile)) {
+    if (!areFilesValid(filenames)) {
       throw new AppException("CRITICAL EXCEPTION - AT LEAST ONE OF YOUR INPUT FILE CANNOT BE READ. CHECK YOUR FILES AGAIN");
     }
 
     convertFilesIntoJson(jsonFilename, filenames);
     shoppingService = new ShoppingService(jsonFilename);
     userDataService = new UserDataService();
+  }
+
+  private static boolean areFilesValid(final String... filenames) {
+    return filenames != null
+           && Arrays.stream(filenames).noneMatch(Objects::isNull)
+           && Arrays.stream(filenames).map(".\\mainapp\\"::concat).map(Paths::get).allMatch(Files::isRegularFile);
   }
 
   private void convertFilesIntoJson(final String jsonFilename, final String... filenames) {

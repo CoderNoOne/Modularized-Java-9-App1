@@ -29,10 +29,6 @@ public class FileService {
 
   public static List<ClientWithProducts> mergeAllFilesIntoClientWithProductsList(final String... filenames) {
 
-    if (filenames == null || Arrays.stream(filenames).map(Paths::get).anyMatch(Files::notExists)) {
-      throw new AppException("CRITICAL EXCEPTION - AT LEAST ONE OF YOUR INPUT FILE CANNOT BE READ. CHECK YOUR FILES AGAIN");
-    }
-
     clientWithProductsList.clear();
     readFiles(filenames);
 
