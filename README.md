@@ -14,9 +14,7 @@ Download the project:
 
 and then run the App.main method.
 
-As simple as that.
-
-NOTE: There might be some issue with files directory relative path pattern which highly depends on your Operating System. Originally the program is designed to be run on windows platform.
+NOTE: There might be some issues with files directory relative path pattern which highly depends on your Operating System. Originally the program is designed to be run on windows platform.
 
 # 3. Screenshot
 
