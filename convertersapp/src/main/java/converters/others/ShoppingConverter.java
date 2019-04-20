@@ -22,6 +22,8 @@ public class ShoppingConverter {
 
   public static Map<Client, Map<Product, Integer>> toShoppingMap(final String jsonFilename) {
 
+    System.out.println("INPUT DATA VALIDATION... \u001B[31m");
+
     return new ClientWithProductsFileJsonConverter(jsonFilename).fromJson()
             .orElseThrow(() -> new AppException("SPECIFIED JSON FILE: " + jsonFilename + " DOESN'T EXIST"))
             .stream()

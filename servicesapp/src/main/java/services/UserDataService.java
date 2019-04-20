@@ -7,7 +7,7 @@ public class UserDataService {
   private Scanner sc = new Scanner(System.in);
 
   public int getInt(String message) {
-    System.out.println(message);
+    System.out.print(message);
 
     String text = sc.nextLine();
     if (!text.matches("[\\d]+")) {

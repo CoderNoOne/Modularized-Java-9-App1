@@ -56,7 +56,7 @@ public class MenuService {
     while (true)
       try {
 
-        int option = userDataService.getInt("INPUT YOUR OPTION: ");
+        int option = userDataService.getInt("\n\t\t\t\t\u001B[35m INPUT YOUR OPTION: ");
         switch (option) {
           case 1:
             option1();
@@ -104,6 +104,7 @@ public class MenuService {
 
   private static void menuOptions() {
 
+    System.out.println("\n\t\t\t\t\t\u001B[36m MENU OPTIONS");
     String menu = MessageFormat.format(
             "\nOption no. 1 - {0}\n" +
                     "Option no. 2 - {1}\n" +
@@ -159,6 +160,8 @@ public class MenuService {
   }
 
   private void option5() {
+
+    System.out.println("\n\t\tCHEAPIEST PRODUCTS IN REGARDS TO CATEGORY\n");
     shoppingService.cheapiestProductInEachCategory().forEach((category, product) ->
             System.out.println("Product category: " + category + " -> Cheapiest product: " + product.getName() + "| price: " + product.getPrize()));
   }
